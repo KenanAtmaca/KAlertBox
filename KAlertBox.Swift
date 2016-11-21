@@ -3,7 +3,7 @@
 //  kenanatmaca.com
 //  Copyright © 2016 Kenan Atmaca. All rights reserved.
 
-//  KAlertBox v1.0
+//  KAlertBox v1.1
 
 import UIKit
 
@@ -250,6 +250,7 @@ class KAlertBox: NSObject {
         contentView.addSubview(drawView)
         
         drawOvalShape.add(addStrokeAnimation(duration: 1.0), forKey: nil)
+        drawOvalShape.add(addOpacityAnimation(duration: 1.0), forKey: nil)
         
         
         UIView.animate(withDuration: 2.5, animations: {
@@ -270,9 +271,23 @@ class KAlertBox: NSObject {
         sAnim.autoreverses = false
         sAnim.duration = duration
         sAnim.toValue = 1
-        
+       
         return sAnim
         
+    }
+    
+    private func addOpacityAnimation(duration:CFTimeInterval) -> CABasicAnimation {
+        
+        let opacityAnim = CABasicAnimation(keyPath: "opacity")
+        opacityAnim.fillMode = kCAFillModeForwards
+        opacityAnim.isRemovedOnCompletion = false
+        opacityAnim.repeatCount = Float.infinity
+        opacityAnim.autoreverses = true
+        opacityAnim.duration = duration
+        opacityAnim.toValue = 0.3
+        opacityAnim.beginTime = 2
+        
+        return opacityAnim
     }
     
     private func addAlertTitles() {
@@ -412,6 +427,7 @@ class KAlertBox: NSObject {
         
         UIView.animate(withDuration: 0.7, animations: {
             () in
+          //  self.contentView.layoutIfNeeded()
             self.alertView.alpha = 1
             if self.animationPos! == AnimationPos.bottom || self.animationPos! == AnimationPos.top {
                 self.alertView.center.y = self.contentView.center.y
